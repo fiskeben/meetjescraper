@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -21,15 +22,24 @@ import (
 var sensorRegexp = regexp.MustCompile("[0-9]+")
 
 func main() {
+	_port := flag.String("port", "", "port to listen to")
+	flag.Parse()
+
+	port := *_port
+	if port == "" {
+		port = "8080"
+	}
+
 	sigs := make(chan os.Signal, 1)
 	done := make(chan bool, 1)
 
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
 	handler := http.HandlerFunc(handle)
-	server := http.Server{Addr: ":8080", Handler: handler}
+	server := http.Server{Addr: fmt.Sprintf(":%s", port), Handler: handler}
 
 	go func() {
+		log.Printf("listening to port %s", port)
 		if err := server.ListenAndServe(); err != nil {
 			log.Println(err)
 			done <- true
