@@ -8,14 +8,14 @@ import (
 
 // Reading represents one unique data point.
 type Reading struct {
-	SensorID string    `json:sensor_id`
+	SensorID string    `json:"sensor_id"`
 	Time     time.Time `json:"timestamp"`
 	Temp     float32   `json:"temperature"`
 	Humidity float32   `json:"humidity"`
 	Light    float32   `json:"light"`
 	PM25     float32   `json:"pm25"`
 	PM10     float32   `json:"pm10"`
-	Voltage  float32   `json:voltage"`
+	Voltage  float32   `json:"voltage"`
 	Firmware string    `json:"firmware_version"`
 	Position Position  `json:"coordinates"`
 	Fcnt     int       `json:"fcnt"`
