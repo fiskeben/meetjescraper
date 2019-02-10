@@ -1,5 +1,7 @@
 # meetjescraper
 
+[![Build Status](https://travis-ci.com/fiskeben/meetjescraper.svg?branch=master)](https://travis-ci.com/fiskeben/meetjescraper)
+
 A HTTP proxy for the
 [Meet je stad](https://meetjestad.net)
 project.
