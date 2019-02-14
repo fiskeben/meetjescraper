@@ -32,7 +32,8 @@ Readings are returned as a list of objects, like this:
 [
   {
     "SensorID": "242",
-    "timestamp": "2019-02-10T11:30:56Z",
+    "date": "2019-02-10T11:30:56Z",
+    "timestamp": 1549798256,
     "temperature": 2.75,
     "humidity": 90.75,
     "light": 0,
