@@ -104,7 +104,8 @@ func parseRow(n []*html.Node) (*Reading, error) {
 	if err != nil {
 		return nil, err
 	}
-	r.Time = t
+	r.Date = t
+	r.Time = t.Unix()
 
 	data = strings.TrimSpace(n[2].FirstChild.Data)
 	v := data[:len(data)-3]

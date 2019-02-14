@@ -3,22 +3,22 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:db1e943b34d673cbbd92f51f5ec36f20b768a9d5783da11d97ff602b8b83d3e0"
+  digest = "1:0f653ee21ace91775734d8d85cd7d2a03b65d50c5555255f233070f0b3fb4492"
   name = "github.com/fiskeben/scrapejestad"
   packages = ["."]
   pruneopts = "UT"
-  revision = "204b47c1d5cf5bc49ec02b7ebad704806218787f"
+  revision = "9bbeaef61bae1175297b37df470d7b23340a9dfd"
 
 [[projects]]
   branch = "master"
-  digest = "1:1235bd185006c1bbdc4292ec1942974469ba1a37ab6bbb73850d75b2bd952efc"
+  digest = "1:de4815ce3ca5b624af2733716ecd471de1ef50cda8afec39491aab517f73139c"
   name = "golang.org/x/net"
   packages = [
     "html",
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "65e2d4e15006aab9813ff8769e768bbf4bb667a0"
+  revision = "3a22650c66bd7f4fb6d1e8072ffd7b75c8a27898"
 
 [solve-meta]
   analyzer-name = "dep"

@@ -9,7 +9,8 @@ import (
 // Reading represents one unique data point.
 type Reading struct {
 	SensorID string    `json:"sensor_id"`
-	Time     time.Time `json:"timestamp"`
+	Time     int64     `json:"timestamp"`
+	Date     time.Time `json:"date"`
 	Temp     float32   `json:"temperature"`
 	Humidity float32   `json:"humidity"`
 	Light    float32   `json:"light"`
@@ -34,7 +35,7 @@ PM10=%f
 Voltage=%f
 Firmware=%s
 Position=%s
-Fcnt=%d`, r.SensorID, r.Time.Format(time.RFC3339), r.Temp, r.Humidity, r.Light, r.PM25, r.PM10, r.Voltage, r.Firmware, r.Position.String(), r.Fcnt)
+Fcnt=%d`, r.SensorID, r.Date.Format(time.RFC3339), r.Temp, r.Humidity, r.Light, r.PM25, r.PM10, r.Voltage, r.Firmware, r.Position.String(), r.Fcnt)
 	gateways := make([]string, len(r.Gateways))
 	for i, g := range r.Gateways {
 		gateways[i] = fmt.Sprintf("  %d %s\n", i, g.String())
