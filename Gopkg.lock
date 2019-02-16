@@ -3,11 +3,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0f653ee21ace91775734d8d85cd7d2a03b65d50c5555255f233070f0b3fb4492"
+  digest = "1:502849a87af1c3fbcbe431730cf2f3fc3dafa7a803a178b274a97f3cca567272"
   name = "github.com/fiskeben/scrapejestad"
   packages = ["."]
   pruneopts = "UT"
-  revision = "9bbeaef61bae1175297b37df470d7b23340a9dfd"
+  revision = "d839d18d9ea107967595ef013999ac2bdf112f59"
 
 [[projects]]
   branch = "master"

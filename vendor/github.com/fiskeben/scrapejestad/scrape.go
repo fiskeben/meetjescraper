@@ -133,16 +133,11 @@ func parseRow(n []*html.Node) (*Reading, error) {
 
 	r.Firmware = strings.TrimSpace(n[8].FirstChild.Data)
 
-	parts := strings.Split(strings.TrimSpace(n[9].FirstChild.NextSibling.FirstChild.Data), " ")
-	lat, err := strconv.ParseFloat(parts[0], 32)
+	pos, err := parsePosition(n[9])
 	if err != nil {
 		return nil, err
 	}
-	lng, err := strconv.ParseFloat(parts[len(parts)-1], 32)
-	if err != nil {
-		return nil, err
-	}
-	r.Position = Position{Lat: float32(lat), Lng: float32(lng)}
+	r.Position = pos
 
 	data = strings.TrimSpace(n[10].FirstChild.Data)
 	fcnt, err := strconv.Atoi(data)
@@ -165,7 +160,7 @@ func parseGateway(n []*html.Node) (Gateway, error) {
 
 	parent := n[0].FirstChild
 	if parent.FirstChild != nil {
-		pos, _ := extractPosition(parent)
+		pos, _ := extractPositionFromURL(parent)
 		g.Position = pos
 		g.Name = strings.TrimSpace(parent.FirstChild.Data)
 	}
@@ -237,7 +232,25 @@ func getID(n *html.Node) string {
 	return ""
 }
 
-func extractPosition(n *html.Node) (Position, error) {
+func parsePosition(n *html.Node) (Position, error) {
+	if n == nil || n.FirstChild == nil || n.FirstChild.NextSibling == nil {
+		return Position{}, nil
+	}
+
+	data := n.FirstChild.NextSibling.FirstChild.Data
+	parts := strings.Split(strings.TrimSpace(data), " ")
+	lat, err := strconv.ParseFloat(parts[0], 32)
+	if err != nil {
+		return Position{}, err
+	}
+	lng, err := strconv.ParseFloat(parts[len(parts)-1], 32)
+	if err != nil {
+		return Position{}, err
+	}
+	return Position{Lat: float32(lat), Lng: float32(lng)}, nil
+}
+
+func extractPositionFromURL(n *html.Node) (Position, error) {
 	var uri string
 	var pos Position
 
