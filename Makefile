@@ -1,13 +1,18 @@
-meetjescraper: $(shell find . -name '*.go')
-	go build
+version := $(shell git describe --tags --always)
 
-linux: $(shell find . -name '*.go')
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o meetjescraper-linux
+meetjescraper-darwin-amd64: $(shell find . -name '*.go')
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.Version=$(version)" -o meetjescraper-darwin-amd64
+
+meetjescraper-linux-amd64: $(shell find . -name '*.go')
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=$(version)" -o meetjescraper-linux-amd64
+
+all: meetjescraper-darwin-amd64 meetjescraper-linux-amd64
 
 test:
 	go test
 	
 clean:
-	rm meetjescraper
+	rm meetjescraper-darwin-amd64
+	rm meetjescraper-linux-amd64
 
-.PHONY: clean test
+.PHONY: clean test all

@@ -17,13 +17,20 @@ import (
 	"syscall"
 
 	"github.com/fiskeben/scrapejestad"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
+
+var Version string
 
 var sensorRegexp = regexp.MustCompile("[0-9]+")
 
 func main() {
 	_port := flag.String("port", "", "port to listen to")
 	flag.Parse()
+
+	printVersionAndExit()
+
+	log.Printf("meetjescraper %s", Version)
 
 	port := *_port
 	if port == "" {
@@ -35,8 +42,14 @@ func main() {
 
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
+	mux := http.NewServeMux()
+
 	handler := http.HandlerFunc(handle)
-	server := http.Server{Addr: fmt.Sprintf(":%s", port), Handler: handler}
+	mux.Handle("/", handler)
+
+	mux.Handle("/metrics", promhttp.Handler())
+
+	server := http.Server{Addr: fmt.Sprintf(":%s", port), Handler: mux}
 
 	go func() {
 		log.Printf("listening to port %s", port)
@@ -128,4 +141,13 @@ func queryService(ctx context.Context, sensorID string, limit int) ([]scrapejest
 		return nil, fmt.Errorf("failed to parse URL '%s': %err", raw, err)
 	}
 	return scrapejestad.ReadWithContext(ctx, u)
+}
+
+func printVersionAndExit() {
+	args := flag.Args()
+	if len(args) == 0 || args[0] != "version" {
+		return
+	}
+	fmt.Printf("meetjescraper version %s\n", Version)
+	os.Exit(0)
 }
