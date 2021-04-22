@@ -80,7 +80,7 @@ func parseTable(t *html.Node) ([]Reading, error) {
 			row := rows[len(rows)-1]
 			row.Gateways = append(row.Gateways, g)
 			rows[len(rows)-1] = row
-		case 16:
+		case 17:
 			row, err := parseRow(nodes)
 			if err != nil {
 				fmt.Printf("error parsing row: %v\n", err)
@@ -131,22 +131,22 @@ func parseRow(n []*html.Node) (*Reading, error) {
 	}
 	r.Voltage = float32(p)
 
-	r.Firmware = strings.TrimSpace(n[8].FirstChild.Data)
+	r.Firmware = strings.TrimSpace(n[9].FirstChild.Data)
 
-	pos, err := parsePosition(n[9])
+	pos, err := parsePosition(n[10])
 	if err != nil {
 		return nil, err
 	}
 	r.Position = pos
 
-	data = strings.TrimSpace(n[10].FirstChild.Data)
+	data = strings.TrimSpace(n[11].FirstChild.Data)
 	fcnt, err := strconv.Atoi(data)
 	if err != nil {
 		return nil, err
 	}
 	r.Fcnt = fcnt
 
-	g, err := parseGateway(n[11:])
+	g, err := parseGateway(n[12:])
 	if err != nil {
 		return nil, err
 	}
