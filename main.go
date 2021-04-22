@@ -62,13 +62,14 @@ func main() {
 	select {
 	case sig := <-sigs:
 		log.Printf("received %v, shutting down", sig)
-		server.Shutdown(context.Background())
-		done <- true
-	case _ = <-done:
+		if err := server.Shutdown(context.Background()); err != nil {
+			log.Fatal(err)
+		}
+	case <-done:
 		log.Println("done")
 		break
 	}
-
+	log.Print("exit")
 }
 
 func handle(w http.ResponseWriter, req *http.Request) {
