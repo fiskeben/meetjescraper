@@ -2,6 +2,7 @@ package scrapejestad
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"strconv"
@@ -31,8 +32,40 @@ func ReadWithContext(ctx context.Context, u *url.URL) ([]Reading, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error reading '%s': %v", u.String(), err)
 	}
-	defer res.Body.Close()
-	return parse(res.Body)
+
+	var doc []JsonReading
+	d := json.NewDecoder(res.Body)
+	if err := d.Decode(&doc); err != nil {
+		return nil, fmt.Errorf("error unmarshaling data: '%v'", err)
+	}
+
+	return mapJsonReadingsToReadings(doc)
+}
+
+func mapJsonReadingsToReadings(r []JsonReading) ([]Reading, error) {
+	res := make([]Reading, len(r))
+	for i, doc := range r {
+		t, err := time.Parse("2006-01-02 15:04:05", doc.Timestamp)
+		if err != nil {
+			return nil, err
+		}
+
+		res[i] = Reading{
+			SensorID: strconv.Itoa(doc.Id),
+			Time:     t.Unix(),
+			Date:     t,
+			Temp:     doc.Temperature,
+			Humidity: doc.Humidity,
+			Voltage:  doc.Supply,
+			Firmware: strconv.Itoa(doc.FirmwareVersion),
+			Position: Position{
+				Lat: doc.Latitude,
+				Lng: doc.Longitude,
+			},
+		}
+	}
+
+	return res, nil
 }
 
 func parse(r io.Reader) ([]Reading, error) {

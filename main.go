@@ -136,7 +136,7 @@ func getLimit(parameters url.Values) (int, error) {
 }
 
 func queryService(ctx context.Context, sensorID string, limit int) ([]scrapejestad.Reading, error) {
-	raw := fmt.Sprintf("https://meetjestad.net/data/sensors_recent.php?sensor=%s&limit=%d", sensorID, limit)
+	raw := fmt.Sprintf("https://meetjestad.net/data/?ids=%s&type=sensors&limit=%d&format=json", sensorID, limit)
 	u, err := url.Parse(raw)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse URL '%s': %err", raw, err)

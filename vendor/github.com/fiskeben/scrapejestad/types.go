@@ -6,6 +6,18 @@ import (
 	"time"
 )
 
+type JsonReading struct {
+	Row             int     `json:"row"`
+	Id              int     `json:"id"`
+	Timestamp       string  `json:"timestamp"`
+	FirmwareVersion int     `json:"firmware_version"`
+	Longitude       float32 `json:"longitude"`
+	Latitude        float32 `json:"latitude"`
+	Temperature     float32 `json:"temperature"`
+	Humidity        float32 `json:"humidity"`
+	Supply          float32 `json:"supply"`
+}
+
 // Reading represents one unique data point.
 type Reading struct {
 	SensorID string    `json:"sensor_id"`
